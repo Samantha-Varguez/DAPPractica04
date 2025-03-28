@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 public class ControllerClientes {
     
      @Autowired
-    RepositoryClientes repositoryCliente;
+    RepositoryCliente repositoryCliente;
     
     @GetMapping()
     public List<Cliente> list() {

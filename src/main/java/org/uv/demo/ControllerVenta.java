@@ -4,6 +4,7 @@ package org.uv.demo;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -28,22 +29,29 @@ public class ControllerVenta {
     
     @GetMapping()
     public List <DTOVenta> list() {
-        List<DTOVenta> lstDTOVentas = serviceVentas.fillVentas();
-        return lstDTOVentas;
+        List<DTOVenta> DTOVentas = serviceVentas.fillDTOVenta();
+        return DTOVentas;
     }
     
-    @GetMapping("/{id}")
-    public Object get(@PathVariable String id) {
-        return null;
-    }
-    
-    @PutMapping("/{id}")
-    public ResponseEntity<?> put(@PathVariable String id, @RequestBody Object input) {
-        return null;
-    }
+//    @GetMapping("/{id}")
+//    public Object get(@PathVariable String id) {
+//        return null;
+//    }
+//    
+//    @PutMapping("/{id}")
+//    public ResponseEntity<?> put(@PathVariable String id, @RequestBody Object input) {
+//        return null;
+//    }
     
     @PostMapping
     public ResponseEntity<DTOVenta> post(@RequestBody DTOVenta dtoventa) {
+        Optional<Cliente> ClienteOpcional = repositoryCliente.findById(dtoventa.getIdCliente());
+        
+        if (ClienteOpcional.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        Cliente cliente = ClienteOpcional.get();
+        
         Venta venta = new Venta();
         venta.setFecha(dtoventa.getFecha());
         venta.setCliente(cliente);
@@ -51,7 +59,7 @@ public class ControllerVenta {
         venta.setLstDetalleVenta(dtoventa.getLstDetalleVenta());
                 
         for (VentaDet detalleVenta : venta.getLstDetalleVenta()){
-            detalleVenta.setIdventa(venta);
+            detalleVenta.setVenta(venta);
         }
         Venta ventaNew= repositoryVenta.save(venta);
         dtoventa.setClave(ventaNew.getId());
@@ -59,9 +67,9 @@ public class ControllerVenta {
         return ResponseEntity.ok(dtoventa);
     }
     
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable String id) {
-        return null;
-    }
-    
+//    @DeleteMapping("/{id}")
+//    public ResponseEntity<?> delete(@PathVariable String id) {
+//        return null;
+//    }
+//    
 }

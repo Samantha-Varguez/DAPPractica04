@@ -1,28 +1,53 @@
 
 package org.uv.demo;
 
-import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
-public class VentaDet {
-    
+@Entity
+@Table(name="venta_det")
+public class VentaDet implements Serializable {
+ 
+    @Id
+    @GeneratedValue(
+            generator = "venta_det_id_seq",
+            strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(
+            name = "venta_det_id_seq",
+            sequenceName = "venta_det_id_seq",
+            initialValue = 1,
+            allocationSize = 1)
+   @Column
    private Long idrow;
+    @Column
    private Long producto;
-   private Long precio;
+    @Column
+   private BigDecimal precio;
+    @Column
    private String descripcion;
+    @Column
    private Long cantidad;
    
-   @ManyToOne
-   @JoinColumn(name = "producto")
+   @ManyToOne(cascade = CascadeType.ALL)
+   @JoinColumn(name = "productos_id", nullable= false)
     private Productos productos;
    
    @ManyToOne
    @JoinColumn(name = "idventa")
-   private Venta idventa;
+   @JsonIgnore
+   private Venta venta;
    
-   
-
     public Long getIdrow() {
         return idrow;
     }
@@ -31,15 +56,23 @@ public class VentaDet {
         this.idrow = idrow;
     }
 
-    public Venta getIdventa() {
-        return idventa;
+    public BigDecimal getPrecio() {
+        return precio;
     }
 
-    public void setIdventa(Venta idventa) {
-        this.idventa = idventa;
+    public void setPrecio(BigDecimal precio) {
+        this.precio = precio;
     }
 
+    public Venta getVenta() {
+        return venta;
+    }
 
+    public void setVenta(Venta venta) {
+        this.venta = venta;
+    }
+    
+    
    
     public Productos getProductos() {
         return productos;
@@ -55,17 +88,6 @@ public class VentaDet {
 
     public void setProducto(Long producto) {
         this.producto = producto;
-    }
-
-
-    
-
-    public Long getPrecio() {
-        return precio;
-    }
-
-    public void setPrecio(Long precio) {
-        this.precio = precio;
     }
 
     public String getDescripcion() {

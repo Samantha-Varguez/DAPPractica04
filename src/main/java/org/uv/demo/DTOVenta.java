@@ -2,13 +2,14 @@
 package org.uv.demo;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
 
 public class DTOVenta {
  private Long clave;
- private Date fecha;
+ private LocalDate fecha;
  private BigDecimal monto;
  private Long IdCliente;
  private List<VentaDet> lstDetalleVenta;
@@ -21,13 +22,14 @@ public class DTOVenta {
         this.clave = clave;
     }
 
-    public Date getFecha() {
+    public LocalDate getFecha() {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
     }
+
 
     public BigDecimal getMonto() {
         return monto;

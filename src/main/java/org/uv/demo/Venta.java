@@ -3,6 +3,7 @@ package org.uv.demo;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -36,8 +37,8 @@ public class Venta implements Serializable {
 @Column
 private Long id;
 @Column
-private Date fecha;
-@Column
+private LocalDate fecha;
+@Column(precision = 9, scale = 6)
 private BigDecimal monto;
 
 
@@ -48,13 +49,6 @@ private BigDecimal monto;
 @OneToMany(mappedBy = "venta", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 private List<VentaDet> lstDetalleVenta;
 
-    public Date getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
-    }
 
     public Long getId() {
         return id;
@@ -62,6 +56,14 @@ private List<VentaDet> lstDetalleVenta;
 
     public void setId(Long id) {
         this.id = id;
+    }
+    
+    public LocalDate getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(LocalDate fecha) {
+        this.fecha = fecha;
     }
 
     public BigDecimal getMonto() {

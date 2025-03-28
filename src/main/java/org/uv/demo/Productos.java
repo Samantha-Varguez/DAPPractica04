@@ -3,6 +3,7 @@ package org.uv.demo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -29,11 +30,11 @@ public class Productos implements Serializable {
               allocationSize=1)
     
     @Column
-    private Long clave;
+    private Long id;
     @Column
     private String nombre;
-    @Column
-    private double precio;
+    @Column(precision = 9, scale =6)
+    private BigDecimal precio;
     
 @JsonIgnore
     @OneToMany(mappedBy = "productos", cascade = CascadeType.ALL, orphanRemoval = false)
@@ -58,22 +59,23 @@ public class Productos implements Serializable {
     public void setLstVentaDet(List<VentaDet> lstVentaDet) {
         this.lstVentaDet = lstVentaDet;
     }
-    
-    public Long getClave() {
-        return clave;
+
+    public Long getId() {
+        return id;
     }
 
-    public void setClave(Long clave) {
-        this.clave = clave;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public double getPrecio() {
+    public BigDecimal getPrecio() {
         return precio;
     }
 
-    public void setPrecio(double precio) {
+    public void setPrecio(BigDecimal precio) {
         this.precio = precio;
     }
+    
 
     public List<Productos> getLstProductos() {
         return lstProductos;
