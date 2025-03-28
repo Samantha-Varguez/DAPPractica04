@@ -6,19 +6,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 @RestController
-@RequestMapping("/cliente")
+@RequestMapping("/clientes")
 public class ControllerClientes {
     
-     @Autowired
+    @Autowired
     RepositoryCliente repositoryCliente;
     
     @GetMapping()
@@ -36,13 +39,14 @@ public class ControllerClientes {
     }
     
     @PutMapping("/{id}")
-    public ResponseEntity<Cliente> put(@PathVariable Long id, @RequestBody Productos input) {
+    public ResponseEntity<Cliente> put(@PathVariable Long id, @RequestBody Cliente input) {
         Optional <Cliente> resprod=repositoryCliente.findById(id);
         if (resprod.isPresent()) {
             Cliente clientesToEdit = resprod.get();
             
             clientesToEdit.setNombre(input.getNombre());
             Cliente clientEdited= repositoryCliente.save(clientesToEdit);
+            return ResponseEntity.ok(clientEdited);
         }
             
         return null;
@@ -68,6 +72,10 @@ public class ControllerClientes {
             return ResponseEntity.notFound().build();
         
     }
-    
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR, reason = "Error message")
+    public void handleError() {
+
+    }
     
 }

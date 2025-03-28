@@ -8,6 +8,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -36,11 +37,8 @@ public class Productos implements Serializable {
     @Column(precision = 9, scale =6)
     private BigDecimal precio;
     
-@JsonIgnore
-    @OneToMany(mappedBy = "productos", cascade = CascadeType.ALL, orphanRemoval = false)
-    private List<Productos> lstProductos;
     
-    @OneToMany(mappedBy = "idventas", cascade = CascadeType.ALL, orphanRemoval = false)
+    @OneToMany(mappedBy = "productos", fetch= FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = false)
     @JsonIgnore
     private List<VentaDet> lstVentaDet;
 
@@ -75,16 +73,6 @@ public class Productos implements Serializable {
     public void setPrecio(BigDecimal precio) {
         this.precio = precio;
     }
-    
-
-    public List<Productos> getLstProductos() {
-        return lstProductos;
-    }
-
-    public void setLstProductos(List<Productos> lstProductos) {
-        this.lstProductos = lstProductos;
-    }
-    
     
     
 }

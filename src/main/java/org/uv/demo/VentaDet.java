@@ -16,22 +16,20 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="venta_det")
+@Table(name="ventadet")
 public class VentaDet implements Serializable {
  
     @Id
     @GeneratedValue(
-            generator = "venta_det_id_seq",
+            generator = "ventadet_idlinea_seq",
             strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(
-            name = "venta_det_id_seq",
-            sequenceName = "venta_det_id_seq",
+            name = "ventadet_idlinea_seq",
+            sequenceName = "ventadet_idlinea_seq",
             initialValue = 1,
             allocationSize = 1)
    @Column
    private Long idrow;
-    @Column
-   private Long producto;
     @Column
    private BigDecimal precio;
     @Column
@@ -40,7 +38,7 @@ public class VentaDet implements Serializable {
    private Long cantidad;
    
    @ManyToOne(cascade = CascadeType.ALL)
-   @JoinColumn(name = "productos_id", nullable= false)
+   @JoinColumn(name = "idproducto", nullable= false)
     private Productos productos;
    
    @ManyToOne
@@ -72,22 +70,12 @@ public class VentaDet implements Serializable {
         this.venta = venta;
     }
     
-    
-   
     public Productos getProductos() {
         return productos;
     }
 
     public void setProductos(Productos productos) {
         this.productos = productos;
-    }
-
-    public Long getProducto() {
-        return producto;
-    }
-
-    public void setProducto(Long producto) {
-        this.producto = producto;
     }
 
     public String getDescripcion() {

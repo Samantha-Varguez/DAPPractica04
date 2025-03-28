@@ -21,16 +21,16 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 
 @Entity
-@Table(name = "ventas")
+@Table(name = "venta")
 public class Venta implements Serializable {
     
     @Id
      @GeneratedValue(
-            generator="ventas_id_seq", 
+            generator="venta_id_seq", 
             strategy = GenerationType.SEQUENCE)
       @SequenceGenerator
-        (name="ventas_id_seq", 
-              sequenceName = "ventas_id_seq", 
+        (name="venta_id_seq", 
+              sequenceName = "venta_id_seq", 
               initialValue=1, 
               allocationSize=1)
     
@@ -43,10 +43,13 @@ private BigDecimal monto;
 
 
 @ManyToOne
-   @JoinColumn(name = "cliente_id")
+   @JoinColumn(name = "idcliente")
     private Cliente cliente;
 
-@OneToMany(mappedBy = "venta", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+@OneToMany(mappedBy = "venta", 
+        fetch = FetchType.LAZY, 
+        cascade = CascadeType.ALL, 
+        orphanRemoval = true)
 private List<VentaDet> lstDetalleVenta;
 
 

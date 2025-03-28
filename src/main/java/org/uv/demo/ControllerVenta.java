@@ -6,13 +6,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 
 @RestController
@@ -46,7 +49,6 @@ public class ControllerVenta {
     @PostMapping
     public ResponseEntity<DTOVenta> post(@RequestBody DTOVenta dtoventa) {
         Optional<Cliente> ClienteOpcional = repositoryCliente.findById(dtoventa.getIdCliente());
-        
         if (ClienteOpcional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
@@ -59,6 +61,11 @@ public class ControllerVenta {
         venta.setLstDetalleVenta(dtoventa.getLstDetalleVenta());
                 
         for (VentaDet detalleVenta : venta.getLstDetalleVenta()){
+            Productos producto = new Productos();
+            producto.setNombre(detalleVenta.getProductos().getNombre());
+            producto.setPrecio(detalleVenta.getProductos().getPrecio());
+            
+            detalleVenta.setProductos(producto);
             detalleVenta.setVenta(venta);
         }
         Venta ventaNew= repositoryVenta.save(venta);
@@ -67,9 +74,10 @@ public class ControllerVenta {
         return ResponseEntity.ok(dtoventa);
     }
     
+    
 //    @DeleteMapping("/{id}")
 //    public ResponseEntity<?> delete(@PathVariable String id) {
 //        return null;
 //    }
-//    
+//   
 }
